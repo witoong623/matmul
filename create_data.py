@@ -22,8 +22,15 @@ if __name__ == '__main__':
     with open(f'A_{args.N}.mat', mode='wb') as f:
         f.write(A.data)
 
+    # create .npy file for debugging purpose
+    np.save(f'A_{args.N}.npy', A)
+
     with open(f'B_{args.N}.mat', mode='wb') as f:
         f.write(B.data)
 
+    np.save(f'B_{args.N}.npy', B)
+
     with open(f'C_{args.N}.mat', mode='wb') as f:
         f.write(C.data)
+
+    np.save(f'C_{args.N}.npy', C)
