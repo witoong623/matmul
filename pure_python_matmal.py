@@ -1,22 +1,9 @@
-import struct
 import time
 
 import numpy as np
 
+from utils import load_float32_array
 
-# load data from .mat
-def load_float32_array(filepath):
-    ''' Load array data from binary file in Python list.\n
-        Caller must interpret the data as intended by caller
-    '''
-    arr = []
-    with open(filepath, 'rb') as f:
-        A_data = f.read()
-        for i in range(0, len(A_data), 4):
-            element_data = A_data[i:i+4]
-            assert len(element_data) == 4
-            arr.append(struct.unpack('f', element_data)[0])
-    return arr
 
 # square matrix size
 N = 128
@@ -45,14 +32,26 @@ def matmul(A, B, M, K, N) -> list[float]:
     for row in range(N):
         for col in range(N):
             # first 2 loops are for each element of output matrix
+            c = 0.0
             for i in range(N):
                 # if matrix A is MxK, B is KxN, then third loop is for K times
                 # to loop over all elements to do K multiplications and K-1 additions
-                C[row * N + col] += A[row * N + i] * B[i * N + col]
+                c += A[row * N + i] * B[i * N + col]
+            # store result in temp variable (in registry?) to avoid accessing array memory 2K - 1 times
+            C[row * N + col] = c
 
     return C
 
+start = time.perf_counter_ns()
 C = matmul(A, B, N, N, N)
+end = time.perf_counter_ns()
+elapsed = (end - start) / 1e9
+
+FLOPs = (2 * N - 1) * N * N
+
+print(f'GFLOPs for {N}x{N} matrix multiplication = {FLOPs / 1e9} GFLOPs')
+print(f'Elapse {elapsed} second, FLOPS = {(FLOPs / 1e9) / elapsed:.5f} GFLOPS')
+
 C = np.array(C, dtype=np.float32)
 target_C = np.array(target_C, dtype=np.float32)
 np.testing.assert_allclose(C, target_C, rtol=1e-5, atol=1e-5)
