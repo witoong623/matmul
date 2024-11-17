@@ -29,14 +29,14 @@ def matmul(A, B, M, K, N) -> list[float]:
     list of list of floats: The resulting matrix with dimensions M x N after multiplying A and B.
     '''
     C = [0] * (M * N)
-    for row in range(N):
+    for row in range(M):
         for col in range(N):
             # first 2 loops are for each element of output matrix
             c = 0.0
-            for i in range(N):
+            for i in range(K):
                 # if matrix A is MxK, B is KxN, then third loop is for K times
                 # to loop over all elements to do K multiplications and K-1 additions
-                c += A[row * N + i] * B[i * N + col]
+                c += A[row * K + i] * B[i * K + col]
             # store result in temp variable (in registry?) to avoid accessing array memory 2K - 1 times
             C[row * N + col] = c
 
