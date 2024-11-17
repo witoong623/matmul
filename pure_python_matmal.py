@@ -9,14 +9,19 @@ from python_gemm import matmul
 # square matrix size
 N = 128
 
-A = load_float32_array('A_128.mat')
-B = load_float32_array('B_128.mat')
-target_C = load_float32_array('C_128.mat')
+A = load_float32_array(f'A_{N}.mat')
+B = load_float32_array(f'B_{N}.mat')
+target_C = load_float32_array(f'C_{N}.mat')
 
 assert len(A) == N * N
 assert len(B) == N * N
 assert len(target_C) == N * N
 
+# converting list of floats to float32 numpy array will be faster
+A = np.array(A, dtype=np.float32)
+B = np.array(B, dtype=np.float32)
+
+warnup = matmul(A, B, N, N, N)
 start = time.perf_counter_ns()
 C = matmul(A, B, N, N, N)
 end = time.perf_counter_ns()
