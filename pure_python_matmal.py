@@ -2,7 +2,7 @@ import time
 
 import numpy as np
 
-from utils import load_float32_array
+from utils import load_float32_array, get_speed_informaiton
 
 
 # square matrix size
@@ -45,12 +45,10 @@ def matmul(A, B, M, K, N) -> list[float]:
 start = time.perf_counter_ns()
 C = matmul(A, B, N, N, N)
 end = time.perf_counter_ns()
-elapsed = (end - start) / 1e9
+speed_info = get_speed_informaiton(N, N, N, start, end)
 
-FLOPs = (2 * N - 1) * N * N
-
-print(f'GFLOPs for {N}x{N} matrix multiplication = {FLOPs / 1e9} GFLOPs')
-print(f'Elapse {elapsed} second, FLOPS = {(FLOPs / 1e9) / elapsed:.5f} GFLOPS')
+print(f'GFLOPs for {N}x{N} matrix multiplication = {speed_info.FLOPs} GFLOPs')
+print(f'Elapse {speed_info.elapsed} second, FLOPS = {speed_info.FLOPS:.5f} GFLOPS')
 
 C = np.array(C, dtype=np.float32)
 target_C = np.array(target_C, dtype=np.float32)
