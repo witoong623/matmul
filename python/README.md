@@ -1,0 +1,3 @@
+- Fastest pure python is 0.03 GFLOPS
+- Fastest numba is 1.6 GFLOPS
+- cache aware (re-order loop) doesn't work

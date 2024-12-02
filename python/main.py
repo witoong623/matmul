@@ -3,27 +3,27 @@ import time
 import numpy as np
 
 from utils import load_float32_array, get_speed_informaiton
-from python_gemm import matmul
+from numba_gemm import naive_matmul
 
 
 # square matrix size
-N = 128
+N = 1024
 
-A = load_float32_array(f'A_{N}.mat')
-B = load_float32_array(f'B_{N}.mat')
-target_C = load_float32_array(f'C_{N}.mat')
+A = load_float32_array(f'../A_{N}.mat')
+B = load_float32_array(f'../B_{N}.mat')
+target_C = load_float32_array(f'../C_{N}.mat')
 
 assert len(A) == N * N
 assert len(B) == N * N
 assert len(target_C) == N * N
 
-# converting list of floats to float32 numpy array will be faster
+# converting list of floats to float32 numpy array will be faster for numba
 A = np.array(A, dtype=np.float32)
 B = np.array(B, dtype=np.float32)
 
-warnup = matmul(A, B, N, N, N)
+warnup = naive_matmul(A, B, N, N, N)
 start = time.perf_counter_ns()
-C = matmul(A, B, N, N, N)
+C = naive_matmul(A, B, N, N, N)
 end = time.perf_counter_ns()
 speed_info = get_speed_informaiton(N, N, N, start, end)
 
