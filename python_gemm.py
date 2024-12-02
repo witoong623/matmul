@@ -1,4 +1,4 @@
-def matmul(A, B, M, K, N) -> list[float]:
+def naive_matmul(A, B, M, K, N) -> list[float]:
     '''
     Perform matrix multiplication of two matrices A and B.
     Parameters:
@@ -23,3 +23,31 @@ def matmul(A, B, M, K, N) -> list[float]:
             C[row * N + col] = c
 
     return C
+
+
+# re-order somehow isn't improve performance in python, use register to accumulate is actually faster
+# 0.02 GFLOPS vs 0.03 GFLOPS
+def reorder_matmul(A, B, M, K, N) -> list[float]:
+    '''
+    Perform matrix multiplication of two matrices A and B.
+    Parameters:
+    A (list of list of floats): The first matrix with dimensions M x K.
+    B (list of list of floats): The second matrix with dimensions K x N.
+    M (int): The number of rows in matrix A.
+    K (int): The number of columns in matrix A and the number of rows in matrix B.
+    N (int): The number of columns in matrix B.
+    Returns:
+    list of list of floats: The resulting matrix with dimensions M x N after multiplying A and B.
+    '''
+    C = [0] * (M * N)
+    for a_row in range(M):
+        for i in range(K):
+            for b_col in range(N):
+                C[a_row * N + b_col] += A[a_row * K + i] * B[i * N + b_col]
+
+    return C
+
+
+matmul = naive_matmul
+
+__all__ = ['matmul']
