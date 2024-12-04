@@ -1,0 +1,12 @@
+{
+    "cmake.sourceDirectory": "${workspaceFolder}/cpp",
+    "cmake.buildDirectory": "${workspaceFolder}/cpp/build",
+    "cmake.configureEnvironment": {
+        "CC": "/usr/bin/clang",
+        "CXX": "/usr/bin/clang++"
+    },
+    "cmake.buildEnvironment": {
+        "CC": "/usr/bin/clang",
+        "CXX": "/usr/bin/clang++"
+    }
+}
