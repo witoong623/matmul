@@ -1,9 +1,10 @@
 ## Speed of matmul
 O3 compile flag. CPU is i7-9700K at 3.6 GHz. Matrix size is 1024x1024.
 
-| Matmul variant | Speed (FLOPS) |
-| -------------- | ------------- |
-| Naive          | 2.1           |
+| Matmul variant         | Speed (GFLOPS) |
+| ---------------------- | -------------- |
+| Naive                  | 1.5            |
+| Re-order (cache aware) | 18             |
 
 
 ## Note on how to install clang in Ubuntu 22.04

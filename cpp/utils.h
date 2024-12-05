@@ -25,10 +25,12 @@ public:
 
 inline MatmalSpeedInfo get_speed_information(int M, int N, int K,
     std::chrono::high_resolution_clock::time_point start, std::chrono::high_resolution_clock::time_point end) {
-  double elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / std::nano::den;
+  double elapsed_nano = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+  double elapsed_sec = elapsed_nano / 1e9;
   double GFLOPs = (2 * K - 1) * M * N / 1e9;
+  double GFLOPS =  GFLOPs / (elapsed_nano / 1e9);
 
-  return MatmalSpeedInfo(GFLOPs, GFLOPs / elapsed, elapsed, M, N, K);
+  return MatmalSpeedInfo(GFLOPs, GFLOPS, elapsed_sec, M, N, K);
 }
 
 #endif

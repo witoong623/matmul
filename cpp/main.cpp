@@ -64,7 +64,7 @@ int main() {
   load_float32_array("../C_1024.mat", C, N * N);
 
   auto start = std::chrono::high_resolution_clock::now();
-  matmul(A, B, ret, N, N, N);
+  reorder_matmul(A, B, ret, N, N, N);
   auto end = std::chrono::high_resolution_clock::now();
 
   auto speed_info = get_speed_information(N, N, N, start, end);
