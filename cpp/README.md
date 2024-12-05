@@ -1,3 +1,11 @@
+## Speed of matmul
+CPU is i7-9700K at 3.6 GHz. Matrix size is 1024x1024.
+
+| Matmul variant | Speed (FLOPS) |
+| -------------- | ------------- |
+| Naive          | 0.7           |
+
+
 ## Note on how to install clang in Ubuntu 22.04
 1. Install tools. In this case, I use clang 15, which isn't the default version for Ubuntu 22.04 (default is 14).
     - clang-15
