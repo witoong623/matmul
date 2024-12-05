@@ -31,6 +31,16 @@ void matmul(const float *A, const float *B, float *C, int M, int K, int N) {
   }
 }
 
+void reorder_matmul(const float *A, const float *B, float *C, int M, int K, int N) {
+  for (int row = 0; row < M; row++) {
+    for (int i = 0; i < K; i++) {
+      for (int col = 0; col < N; col++) {
+        C[row * N + col] += A[row * K + i] * B[i * N + col];
+      }
+    }
+  }
+}
+
 bool assert_array_equal(const float *A, const float *B, int size) {
   float epsilon = 1e-3;
 
@@ -59,6 +69,7 @@ int main() {
 
   auto speed_info = get_speed_information(N, N, N, start, end);
   std::cout << "GFLOPs for " << N << "x" << N << " matrix multiplication = " << speed_info.FLOPs << " GFLOPs" << std::endl;
+  // TODO: elapse should be in micro seconds
   std::cout << "Elapsed " << speed_info.elapsed << " seconds, FLOPS = " << std::fixed << std::setprecision(5) << speed_info.FLOPS << " GFLOPS" << std::endl;
 
   if (assert_array_equal(C, ret, N * N)) {
