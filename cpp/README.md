@@ -1,29 +1,38 @@
 ## Note on how to install clang in Ubuntu 22.04
-1. Install tools. Don't bother to install clang-15 (not the default one) because one of the tools we need don't have version 14 in Ubuntu repository yet
-    - clang
-    - libc++-dev
-    - libc++abi-dev
-    - lld
-2. To make CMake extension work in VS Code, set the config for the extension at least as follow.
+1. Install tools. In this case, I use clang 15, which isn't the default version for Ubuntu 22.04 (default is 14).
+    - clang-15
+    - libc++-15-dev
+    - libc++abi-15-dev
+    - lld-15
+2. To make CMake extension and terminal work in VS Code, set the config for the extension at least as follow.
 ```
 {
     "cmake.configureEnvironment": {
-        "CC": "/usr/bin/clang",
-        "CXX": "/usr/bin/clang++"
+        "CC": "/usr/bin/clang-15",
+        "CXX": "/usr/bin/clang++-15"
     },
     "cmake.buildEnvironment": {
-        "CC": "/usr/bin/clang",
-        "CXX": "/usr/bin/clang++"
+        "CC": "/usr/bin/clang-15",
+        "CXX": "/usr/bin/clang++-15"
+    },
+    "terminal.integrated.env.linux": {
+        "CC": "/usr/bin/clang-15",
+        "CXX": "/usr/bin/clang++-15"
     }
 }
 ```
-3. Set the `C` and `CXX` environment variable to clang and clang++ to be able to run cmake in terminal.
+3. Set the `C` and `CXX` environment variable to clang and clang++ to be able to run cmake in terminal outside VS Code. (Probably the better way to do this is to use update-alternatives to set the default version of clang command to version 15.)
 ```
-export CC=/usr/bin/clang
-export CXX=/usr/bin/clang++
+export CC=/usr/bin/clang-15
+export CXX=/usr/bin/clang++-15
 ```
-4. Set linker flag in CMakeLists.txt as follow `set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=lld")`. This will tell it to use libc++, c++abi and lld as linker.
-5. Run `clang++ -v -E` to find out what g++ version does clang++ look for library, install the corresponding `libstdc++-dev`. ()
+4. Set compiler flag in CMakeLists.txt `set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")`.
+    This will tell it to use libc++ as standard lib.
+5. Set linker flag in CMakeLists.txt as follow `set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -fuse-ld=lld-15")`.
+    This will tell it to use libc++, c++abi and lld as linker.
+6. Run `clang++ -v -E` to find out what g++ version does clang++ look for library, install the corresponding `libstdc++-dev`.
 
-**This is still broken because it seems to not use libc++. Normally, I should expect to be able to put `-stdlib=libc++ -lc++abi` in linker flag and linker would work.
-Instead, it give me "no std::cout" symbol**
+#### Resource
+https://stackoverflow.com/questions/7031126/switching-between-gcc-and-clang-llvm-using-cmake  
+https://stackoverflow.com/questions/27178106/linking-libc-to-cmake-project-on-linux  
+https://askubuntu.com/questions/1449769/clang-cannot-find-iostream  

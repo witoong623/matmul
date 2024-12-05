@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.15...3.31)
 
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=lld")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -fuse-ld=lld-15")
 project(matmul LANGUAGES CXX)
 
 add_executable(matmul main.cpp)
+
+target_compile_features(matmul PUBLIC cxx_std_20)
+set_target_properties(matmul PROPERTIES CXX_EXTENSIONS OFF)

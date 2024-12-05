@@ -2,11 +2,15 @@
     "cmake.sourceDirectory": "${workspaceFolder}/cpp",
     "cmake.buildDirectory": "${workspaceFolder}/cpp/build",
     "cmake.configureEnvironment": {
-        "CC": "/usr/bin/clang",
-        "CXX": "/usr/bin/clang++"
+        "CC": "/usr/bin/clang-15",
+        "CXX": "/usr/bin/clang++-15"
     },
     "cmake.buildEnvironment": {
-        "CC": "/usr/bin/clang",
-        "CXX": "/usr/bin/clang++"
+        "CC": "/usr/bin/clang-15",
+        "CXX": "/usr/bin/clang++-15"
+    },
+    "terminal.integrated.env.linux": {
+        "CC": "/usr/bin/clang-15",
+        "CXX": "/usr/bin/clang++-15"
     }
 }
